@@ -8,7 +8,11 @@ import socket
 class PubSubService(DatagramProtocol):
     def __init__(self, *args, **kwargs):
         self.channels = {}
-        self.stable = {'id': 'pub_sub'}
+        self.stable = {
+            'id': 'pub_sub',
+            'subscribeToChannel': {'s': 'sendString'},
+            'publishToChannel': {'s': 'sendMixedVec'}
+        }
 
     def sendError(self, msg, addr):
         print(msg)
@@ -62,7 +66,7 @@ def dobcast():
         print('error durring broadcasting', e)
 
 
-reactor.listenUDP(1525, service, interface='::')
+reactor.listenUDP(1526, service, interface='::')
 
 bcast = task.LoopingCall(dobcast)
 bcast.start(10)
